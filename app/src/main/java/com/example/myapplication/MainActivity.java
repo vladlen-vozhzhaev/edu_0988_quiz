@@ -40,23 +40,13 @@ public class MainActivity extends AppCompatActivity {
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(questions[questionIndex].isAnswerTrue())
-                    Toast.makeText(MainActivity.this, "Правильно!", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(MainActivity.this, "Не правильно!", Toast.LENGTH_SHORT).show();
-                questionIndex = (questionIndex+1)%questions.length;
-                questionTextView.setText(questions[questionIndex].getQuestionText());
+                checkAnswer(true);
             }
         });
         noBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!questions[questionIndex].isAnswerTrue())
-                    Toast.makeText(MainActivity.this, "Правильно!", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(MainActivity.this, "Не правильно!", Toast.LENGTH_SHORT).show();
-                questionIndex = (questionIndex+1)%questions.length;
-                questionTextView.setText(questions[questionIndex].getQuestionText());
+                checkAnswer(false);
             }
         });
         showAnswer.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +57,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void checkAnswer(boolean btn){
+        if((questions[questionIndex].isAnswerTrue() && btn) || (!questions[questionIndex].isAnswerTrue() && !btn))
+            Toast.makeText(MainActivity.this, "Правильно!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(MainActivity.this, "Не правильно!", Toast.LENGTH_SHORT).show();
+        questionIndex = (questionIndex+1)%questions.length;
+        questionTextView.setText(questions[questionIndex].getQuestionText());
     }
 
     @Override
