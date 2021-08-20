@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     Button yesBtn;
     Button noBtn;
     TextView questionTextView;
+    Button showAnswer;
     Question[] questions = {
             new Question(R.string.question1, true),
             new Question(R.string.question2, true),
@@ -23,11 +26,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("SYSTEM INFO: ", "Вызван метод onCreate()");
         setContentView(R.layout.activity_main);
 
+        if(savedInstanceState != null){
+            questionIndex = savedInstanceState.getInt("questionIndex");
+        }
         yesBtn = findViewById(R.id.yesBtn);
         noBtn = findViewById(R.id.noBtn);
         questionTextView = findViewById(R.id.questionTextView);
+        showAnswer = findViewById(R.id.showAnswer);
         questionTextView.setText(questions[questionIndex].getQuestionText());
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,5 +59,45 @@ public class MainActivity extends AppCompatActivity {
                 questionTextView.setText(questions[questionIndex].getQuestionText());
             }
         });
+        showAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AnswerActivity.class);
+                intent.putExtra("answer", questions[questionIndex].isAnswerTrue());
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d("SYSTEM INFO: ", "Вызван метод onStart()");
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.d("SYSTEM INFO: ", "Вызван метод onResume()");
+    }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        Log.d("SYSTEM INFO: ", "Вызван метод onSaveInstanceState()");
+        savedInstanceState.putInt("questionIndex", questionIndex);
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.d("SYSTEM INFO: ", "Вызван метод onPause()");
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.d("SYSTEM INFO: ", "Вызван метод onStop()");
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d("SYSTEM INFO: ", "Вызван метод onDestroy()");
     }
 }
